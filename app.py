@@ -1,13 +1,9 @@
 import streamlit as st
-import datetime
 
-# --- 1. 헤더 섹션 (기존 코드) ---
 st.markdown("# 🤖 AI 챗봇 만들기")
 st.markdown("---")
 st.markdown("## 질문을 하시면 AI 친구가 응답합니다.")
-
 st.header("1. 기본 정보 입력")
-
 user_id = st.text_input("아이디(ID)를 입력하세요", placeholder="example_user")
 age = st.number_input("나이를 입력하세요", min_value=1, max_value=100, value=17)
 question = st.text_area("AI에게 보낼 질문을 입력하세요", placeholder="여기에 질문을 작성해 주세요.")
@@ -28,7 +24,6 @@ if st.button("🚀 질문 전송하기"):
         * **질문 내용:** {question}
         * **선택 모델:** `{ai_model}` | **말투:** `{tone}`
         * **활성화 기능:** {', '.join(features) if features else '없음'}
-        * **예약 시각:** {chat_date} {chat_time}
         """)
         
         if age < 14:
