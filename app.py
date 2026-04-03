@@ -1,6 +1,6 @@
 import streamlit as st
 
-st.markdown("# 🤖 AI 챗봇 만들기")
+st.markdown("# AI 챗봇 만들기")
 st.markdown("---")
 st.markdown("## 질문을 하시면 AI 친구가 응답합니다.")
 st.header("1. 기본 정보 입력")
@@ -17,7 +17,7 @@ st.header("3. 예약 및 동의")
 agree = st.checkbox("개인정보 수집 및 AI 학습 이용에 동의합니다.")
 st.divider()
 
-if st.button("🚀 질문 전송하기"):
+if st.button("질문 전송하기"):
     if agree:
         st.success(f"성공적으로 전송되었습니다! ({user_id}님)")
         st.markdown(f"""
