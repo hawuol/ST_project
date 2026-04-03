@@ -24,6 +24,7 @@ if st.button("질문 전송하기"):
         * **질문 내용:** {question}
         * **선택 모델:** `{ai_model}` | **말투:** `{tone}`
         * **활성화 기능:** {', '.join(features) if features else '없음'}
+        * **창의성:** `{creativity}%` | **처리 속도:** `{ai_speed}`
         """)
         
         if age < 14:
