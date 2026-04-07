@@ -1,33 +1,46 @@
 import streamlit as st
 
-st.markdown("# AI 챗봇 만들기")
-st.markdown("---")
-st.markdown("## 질문을 하시면 AI 친구가 응답합니다.")
-st.header("1. 기본 정보 입력")
-user_id = st.text_input("아이디(ID)를 입력하세요", placeholder="example_user")
-age = st.number_input("나이를 입력하세요", min_value=1, max_value=100, value=17)
-question = st.text_area("AI에게 보낼 질문을 입력하세요", placeholder="여기에 질문을 작성해 주세요.")
+# 1. [sidebar] 사이드바: 앱 전체 설정 및 제어
+with st.sidebar:
+    st.header("⚙️ 앱 설정")
+    user_name = st.text_input("사용자 이름", value="게스트")
+    app_mode = st.radio("작업 모드", ["편집 모드", "보기 모드"])
+    st.divider()
+    st.info(f"접속자: {user_name}")
 
-st.header("2. 챗봇 설정")
-ai_model = st.radio("사용할 AI 모델을 선택하세요", ["GPT-4", "Claude 3", "Gemini Pro"], horizontal=True)
-tone = st.selectbox("답변의 말투를 골라주세요", ["친절하게", "냉철하게", "유머러스하게"])
-features = st.multiselect("추가 기능을 선택하세요", ["이미지 생성", "웹 검색", "코드 분석", "번역"])
-creativity = st.slider("AI의 창의성 수준을 설정하세요", 0, 100, 50)
-ai_speed = st.select_slider("응답 처리 속도를 선택하세요",options=["매우 느림", "느림", "보통", "빠름", "실시간"],value="보통")
-agree = st.checkbox("개인정보 수집 및 AI 학습 이용에 동의합니다.")
-st.markdown("---")
+# 메인 타이틀
+st.title("📊 데이터 관리 대시보드")
+st.write(f"{user_name}님, 환영합니다! 오늘 수행할 작업을 선택하세요.")
 
-if st.button("질문 전송하기"):
-    if agree:
-        st.success(f"성공적으로 전송되었습니다! ({user_id}님)")
-        st.markdown(f"""
-        * **질문 내용:** {question}
-        * **선택 모델:** `{ai_model}` | **말투:** `{tone}`
-        * **활성화 기능:** {', '.join(features) if features else '없음'}
-        * **창의성:** `{creativity}%` | **처리 속도:** `{ai_speed}`
-        """)
-        
-        if age < 14:
-            st.info("참고: 14세 미만 사용자이므로 보호자 모드가 활성화됩니다.")
-    else:
-        st.error("⚠️ 동의 항목에 체크해야 전송이 가능합니다.")
+# 2. [tabs] 탭: 큰 카테고리 분류
+tab1, tab2 = st.tabs(["📁 데이터 입력", "📈 통계 확인"])
+
+with tab1:
+    st.subheader("새 데이터 등록")
+    
+    # 3. [columns] 컬럼: 위젯 가로 배치 (1:1 비율)
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        item_name = st.text_input("품목명", placeholder="예: 노트북")
+        item_price = st.number_input("단가", min_value=0, step=1000)
+    
+    with col2:
+        item_cat = st.selectbox("카테고리", ["전자제품", "도서", "식품"])
+        item_count = st.number_input("수량", min_value=1, value=1)
+
+    # 4. [container] 컨테이너: 실행 결과 묶어서 강조하기
+    if st.button("등록하기"):
+        with st.container(border=True): # 테두리가 있는 박스로 묶기
+            st.write("### ✅ 등록 확인")
+            st.write(f"**품목:** {item_name} ({item_cat})")
+            st.write(f"**총 금액:** {item_price * item_count}원")
+            st.success("데이터베이스에 성공적으로 저장되었습니다.")
+
+with tab2:
+    st.subheader("전체 요약 통계")
+    # 컬럼을 3개로 나누어 수치만 강조
+    stat1, stat2, stat3 = st.columns(3)
+    stat1.metric("오늘 방문자", "120명", "12%")
+    stat2.metric("신규 등록", "15건", "5%")
+    stat3.metric("성공률", "98%", "1%")
