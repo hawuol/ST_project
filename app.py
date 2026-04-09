@@ -3,5 +3,5 @@ import streamlit as st
 st.title("카운터 앱")
 st.session_state.count = 0
 if st.button("증가"):
-    count = count+1
-st.markdown(f"## 현재 숫자: `{count}`")
+    st.session_state.count += 1
+st.markdown(f"## 현재 숫자: `{st.session_state.count}`")
