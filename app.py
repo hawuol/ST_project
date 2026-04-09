@@ -46,4 +46,4 @@ if st.button("코디 완성하기"):
         """)
         st.success("오늘의 스타일링이 완성되었습니다! 자신 있게 외출하세요!")
         
-st.video("https://www.youtube.com/watch?v=lkMZ8ytly1k", use_container_width=True)
+st.video("https://www.youtube.com/watch?v=lkMZ8ytly1k")
