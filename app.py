@@ -30,7 +30,6 @@ if new_todo == "":
 st.markdown("---")
 for i in range(len(st.session_state.todo_list)):
     col_task, col_btn, col_status = st.columns([4, 1, 1])
-    st.session_state.count = 0
     with col_task:
         st.write(f"{i+1}. {st.session_state.todo_list[i][0]}")
     with col_btn:
@@ -40,7 +39,6 @@ for i in range(len(st.session_state.todo_list)):
     with col_status:
         if st.session_state.todo_list[i][1]:
             st.write("✅ **달성!**")
-            st.session_state.count += 1
 st.markdown("---")
 
 st.header("📈 3. 나의 갓생 지수")
@@ -48,7 +46,11 @@ if not st.session_state.todo_list:
     st.write("아직 등록된 할 일이 없습니다.")
 else:
     total = len(st.session_state.todo_list)
-    progress = (st.session_state.count / total) * 100
+    count = 0
+    for item in st.session_state.todo_list:
+        if item[1] == True:
+            count += 1
+    progress = (count / total) * 100
     st.metric("오늘의 달성률", f"{progress:.1f}%")
     st.progress(progress / 100)
     if st.button("기록 전체 초기화"):
