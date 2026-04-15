@@ -2,7 +2,7 @@ import streamlit as st
 
 if 'todo_list' not in st.session_state:
     st.session_state.todo_list = []
-if 'user_goal' not in st.session_state:
+if 'user_motto' not in st.session_state:
     st.session_state.user_motto = "오늘도 화이팅!"
 
 def add_todo():
