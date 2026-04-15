@@ -59,16 +59,10 @@ def page_report():
             st.session_state.todo_list = []
             st.rerun()
 
-with st.sidebar:
-    st.title("🌱 갓생 플래너")
-    st.image("https://t1.daumcdn.net/brunch/service/user/3K2E/image/HgEP16G0-vPNsDHC7hSz8nSwY2A.png")
-    st.info(f"현재 다짐: {st.session_state.user_motto}")
-
 pg = st.navigation([
     st.Page(page_motto, title="오늘의 다짐", icon="📣"),
     st.Page(page_todo, title="오늘의 할 일", icon="✅"),
     st.Page(page_report, title="나의 갓생 지수", icon="📈")], position="top")
 
 st.title("🌱 갓생 살기 플래너")
-
 pg.run()
