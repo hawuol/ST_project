@@ -78,10 +78,10 @@ def page_report():
             st.rerun()
 
 def page_ai_coach():
-    st.header("🤖 AI 갓생 코치와 대화하기")
+    st.header("🤖 AI 코치와 대화하기")
     if "messages" not in st.session_state:
         st.session_state.messages = [
-            {"role": "system", "content": "너는 사용자의 할 일 목록과 달성률을 분석해주는 열정적인 갓생 코치야. 짧고 명확하게 조언해줘."}
+            {"role": "system", "content": "너는 사용자의 할 일 목록과 달성률을 분석하여 조언하는 열정적인 코치야. 짧고 명확하게 조언해줘."}
         ]
     total_tasks = len(st.session_state.todo_list)
     done_tasks = sum(1 for item in st.session_state.todo_list if item[1])
@@ -100,7 +100,7 @@ def page_ai_coach():
             full_response = ""
             messages_for_api = st.session_state.messages + [{"role": "system", "content": status_context}]
             with st.spinner("코치가 생각 중..."):
-                response = client.chat.completions.create(
+                response = ai_client.chat.completions.create(
                     model="gpt-3.5-turbo",
                     messages=messages_for_api)
                 full_response = response.choices[0].message.content
