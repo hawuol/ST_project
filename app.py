@@ -81,12 +81,9 @@ def page_ai_coach():
     st.header("🤖 AI 코치와 대화하기")
     if "messages" not in st.session_state:
         st.session_state.messages = [
-            {"role": "system", "content": "너는 사용자의 할 일 목록과 달성률을 분석하여 조언하는 열정적인 코치야. 짧고 명확하게 조언해줘."}
+            {"role": "system", "content": "너는 사용자의 할 일 목록과 달성 정도를 분석하여 조언하는 열정적인 코치야. 짧고 명확하게 조언해줘."}
         ]
-    total_tasks = len(st.session_state.todo_list)
-    done_tasks = sum(1 for item in st.session_state.todo_list if item[1])
-    progress = (done_tasks / total_tasks * 100) if total_tasks > 0 else 0
-    status_context = f"현재 나의 할 일: {st.session_state.todo_list}, 오늘의 달성률: {progress:.1f}%야."
+    status_context = f"현재 나의 할 일과 달성 여부: {st.session_state.todo_list}"
     for message in st.session_state.messages:
         if message["role"] != "system":
             with st.chat_message(message["role"]):
