@@ -98,7 +98,7 @@ def page_ai_coach():
             messages_for_api = st.session_state.messages + [{"role": "system", "content": status_context}]
             with st.spinner("코치가 생각 중..."):
                 response = ai_client.chat.completions.create(
-                    model="gpt-3.5-turbo",
+                    model="gpt-5.4-mini",
                     messages=messages_for_api)
                 full_response = response.choices[0].message.content
                 message_placeholder.markdown(full_response)
