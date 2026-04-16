@@ -1,5 +1,8 @@
 import streamlit as st
 
+from openai import OpenAI
+ai_client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+
 if 'todo_list' not in st.session_state:
     st.session_state.todo_list = []
 if 'user_motto' not in st.session_state:
@@ -74,10 +77,41 @@ def page_report():
             st.session_state.todo_list = []
             st.rerun()
 
+def page_ai_coach():
+    st.header("🤖 AI 갓생 코치와 대화하기")
+    if "messages" not in st.session_state:
+        st.session_state.messages = [
+            {"role": "system", "content": "너는 사용자의 할 일 목록과 달성률을 분석해주는 열정적인 갓생 코치야. 짧고 명확하게 조언해줘."}
+        ]
+    total_tasks = len(st.session_state.todo_list)
+    done_tasks = sum(1 for item in st.session_state.todo_list if item[1])
+    progress = (done_tasks / total_tasks * 100) if total_tasks > 0 else 0
+    status_context = f"현재 나의 할 일: {st.session_state.todo_list}, 오늘의 달성률: {progress:.1f}%야."
+    for message in st.session_state.messages:
+        if message["role"] != "system":
+            with st.chat_message(message["role"]):
+                st.markdown(message["content"])
+    if prompt := st.chat_input("코치님에게 궁금한 점을 물어보세요!"):
+        st.session_state.messages.append({"role": "user", "content": prompt})
+        with st.chat_message("user"):
+            st.markdown(prompt)
+        with st.chat_message("assistant"):
+            message_placeholder = st.empty()
+            full_response = ""
+            messages_for_api = st.session_state.messages + [{"role": "system", "content": status_context}]
+            with st.spinner("코치가 생각 중..."):
+                response = client.chat.completions.create(
+                    model="gpt-3.5-turbo",
+                    messages=messages_for_api)
+                full_response = response.choices[0].message.content
+                message_placeholder.markdown(full_response)
+        st.session_state.messages.append({"role": "assistant", "content": full_response})
+
 pg = st.navigation([
     st.Page(page_motto, title="오늘의 다짐", icon="📣"),
     st.Page(page_todo, title="오늘의 할 일", icon="✅"),
-    st.Page(page_report, title="나의 갓생 지수", icon="📈")], position="top")
+    st.Page(page_report, title="나의 갓생 지수", icon="📈")]
+    st.Page(page_ai_coach, title="AI 코칭", icon="🤖"), position="top")
 
 st.title("🌱 갓생 살기 플래너")
 pg.run()
