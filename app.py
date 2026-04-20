@@ -79,30 +79,13 @@ def page_report():
 
 def page_ai_coach():
     st.header("🤖 AI 코치와 대화하기")
-    if "messages" not in st.session_state:
-        st.session_state.messages = [
-            {"role": "system", "content": "너는 사용자의 할 일 목록과 달성 정도를 분석하여 조언하는 열정적인 코치야. 짧고 명확하게 조언해줘."}
-        ]
-    status_context = f"현재 나의 할 일과 달성 여부: {st.session_state.todo_list}"
-    for message in st.session_state.messages:
-        if message["role"] != "system":
-            with st.chat_message(message["role"]):
-                st.markdown(message["content"])
-    if prompt := st.chat_input("코치님에게 궁금한 점을 물어보세요!"):
-        st.session_state.messages.append({"role": "user", "content": prompt})
-        with st.chat_message("user"):
-            st.markdown(prompt)
-        with st.chat_message("assistant"):
-            message_placeholder = st.empty()
-            full_response = ""
-            messages_for_api = st.session_state.messages + [{"role": "system", "content": status_context}]
-            with st.spinner("코치가 생각 중..."):
-                response = ai_client.chat.completions.create(
-                    model="gpt-5.4-mini",
-                    messages=messages_for_api)
-                full_response = response.choices[0].message.content
-                message_placeholder.markdown(full_response)
-        st.session_state.messages.append({"role": "assistant", "content": full_response})
+    prompt = st.text_input("질문을 입력하세요")
+    if st.button("보내기"):
+        response = ai_client.responses.create(
+            model="gpt-5.4-mini",
+            input=prompt
+        )
+        st.write(response.output_text)
 
 pg = st.navigation([
     st.Page(page_motto, title="오늘의 다짐", icon="📣"),
