@@ -78,7 +78,7 @@ def page_report():
             st.rerun()
 
 def page_ai_coach():
-    st.header("🤖 AI 코치와 대화하기")
+    st.header("🧐 AI 코치와 대화하기")
     prompt = st.text_input("질문을 입력하세요")
     if st.button("보내기"):
         response = ai_client.responses.create(
