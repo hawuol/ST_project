@@ -93,7 +93,7 @@ def page_ai_coach():
         st.session_state.messages.append({"role": "user", "content": question})
         with st.chat_message("user"):
             st.markdown(question)
-        with st.chat_message("ai"):
+        with st.chat_message("assistant"):
             status_context = f"현재 나의 할 일과 달성 여부: {st.session_state.todo_list}"
             prompt = st.session_state.messages + [{"role": "system", "content": status_context}]
             with st.spinner("코치가 생각 중..."):
@@ -102,7 +102,7 @@ def page_ai_coach():
                     messages=prompt)
                 ai_response = response.choices[0].message.content
                 st.markdown(ai_response)
-        st.session_state.messages.append({"role": "ai", "content": ai_response})
+        st.session_state.messages.append({"role": "assistant", "content": ai_response})
         st.markdown(st.session_state.messages)
 
 pg = st.navigation([
