@@ -99,9 +99,10 @@ def page_ai_coach():
                 response = ai_client.chat.completions.create(
                     model="gpt-5.4-mini",
                     messages=prompt)
-                full_response = response.choices[0].message.content
-                st.markdown(full_response)
-        st.session_state.messages.append({"role": "ai", "content": full_response})
+                ai_response = response.choices[0].message.content
+                st.markdown(ai_response)
+        st.session_state.messages.append({"role": "ai", "content": ai_response})
+    st.markdown(session_state.messages)
 
 pg = st.navigation([
     st.Page(page_motto, title="오늘의 다짐", icon="📣"),
