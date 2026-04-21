@@ -103,7 +103,6 @@ def page_ai_coach():
                 ai_response = response.choices[0].message.content
                 st.markdown(ai_response)
         st.session_state.messages.append({"role": "assistant", "content": ai_response})
-        st.markdown(st.session_state.messages)
 
 pg = st.navigation([
     st.Page(page_motto, title="오늘의 다짐", icon="📣"),
