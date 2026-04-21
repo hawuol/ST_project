@@ -94,14 +94,14 @@ def page_ai_coach():
         with st.chat_message("user"):
             st.markdown(question)
         with st.chat_message("ai"):
-            message_placeholder = st.empty()
-            prompt = st.session_state.messages
+            status_context = f"현재 나의 할 일과 달성 여부: {st.session_state.todo_list}"
+            prompt = st.session_state.messages + [{"role": "system", "content": status_context}]
             with st.spinner("코치가 생각 중..."):
                 response = ai_client.chat.completions.create(
                     model="gpt-5.4-mini",
                     messages=prompt)
                 ai_response = response.choices[0].message.content
-                message_placeholder.markdown(ai_response)
+                st.markdown(ai_response)
         st.session_state.messages.append({"role": "ai", "content": ai_response})
         st.markdown(st.session_state.messages)
 
